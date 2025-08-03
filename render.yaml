@@ -1,7 +1,11 @@
 services:
   - type: web
-    name: atmospro-servidor
+    name: AtmosPro
     env: python
     plan: free
-    buildCommand: ""
-    startCommand: "python servidor_meteo.py"
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn servidor_meteo:app"
+    envVars:
+      - key: FLASK_ENV
+        value: production
