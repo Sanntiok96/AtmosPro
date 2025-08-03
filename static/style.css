@@ -1,1 +1,81 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    color: black;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+}
+
+body.dia {
+    background-image: url("/static/fondo_dia.jpg");
+}
+
+body.noche {
+    background-image: url("/static/fondo_noche.jpg");
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+    margin-top: 50px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.logo {
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+h1, h2, h3 {
+    margin: 5px 0;
+}
+
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+    text-align: left;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.data-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    margin: 5px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #004a99;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
