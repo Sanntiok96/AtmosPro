@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: atmospro-servidor
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: "python servidor_meteo.py"
