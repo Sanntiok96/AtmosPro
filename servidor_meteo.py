@@ -1,8 +1,6 @@
-# servidor_meteo.py
-from flask import Flask, request, render_template, send_from_directory, jsonify
-import csv
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
-from datetime import datetime
+import csv
 
 app = Flask(__name__)
 
@@ -26,16 +24,18 @@ ultima_fila = None
 def recibir_datos():
     global ultima_fila
     datos = request.get_json()
-    ahora = datetime.now()
 
     def formatear(valor):
         if isinstance(valor, float):
             return f"{valor:.2f}".replace('.', ',')
         return valor
 
+    fecha = datos.get("fecha", "0000-00-00")
+    hora = datos.get("hora", "00:00")
+
     fila = [
-        ahora.strftime("%Y-%m-%d"),
-        ahora.strftime("%H:%M"),  # Solo hora y minutos
+        fecha,
+        hora,
         formatear(datos["temp"]),
         formatear(datos["hum"]),
         formatear(datos["pres"]),
@@ -47,18 +47,15 @@ def recibir_datos():
 
     ultima_fila = fila
 
-    if ahora.minute in [0, 15, 30, 45] and ahora.second == 0:
-        with open(CSV_FILE, mode='a', newline='') as file:
-            writer = csv.writer(file, delimiter=';')
-            writer.writerow(fila)
+    with open(CSV_FILE, mode='a', newline='') as file:
+        writer = csv.writer(file, delimiter=';')
+        writer.writerow(fila)
 
-    return {"status": "ok"}
+    return jsonify({"status": "ok"})
 
 @app.route("/api/ultima")
 def api_ultima():
-    if ultima_fila:
-        return jsonify(ultima_fila)
-    return jsonify([])
+    return jsonify(ultima_fila or [])
 
 @app.route("/")
 def index():
@@ -73,9 +70,5 @@ def index():
 def descargar_csv():
     return send_from_directory("datos", "registro.csv", as_attachment=True)
 
-@app.route("/static/<path:filename>")
-def static_files(filename):
-    return send_from_directory("static", filename)
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
