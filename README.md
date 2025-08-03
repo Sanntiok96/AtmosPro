@@ -1,78 +1,48 @@
-AtmosPro - Estación Meteorológica con ESP32 y Python
+# AtmosPro - Estación Meteorológica IoT
 
-AtmosPro es un proyecto completo de estación meteorológica que utiliza un ESP32 con MicroPython para capturar datos ambientales y enviarlos a un servidor desarrollado en Python con Flask.
+AtmosPro es una estación meteorológica basada en ESP32 con MicroPython que envía datos por Wi-Fi a un servidor Flask. Este servidor recibe, guarda y muestra los datos en una interfaz web simple, además de permitir su descarga en CSV.
 
+## Funcionalidad
 
-Funcionalidades
+- Recibe datos ambientales desde el ESP32 por HTTP (temperatura, humedad, presión, luz, lluvia, CO₂, etc.).
+- Guarda los datos en un archivo CSV si es un minuto múltiplo de 15.
+- Muestra los datos más recientes en la interfaz web.
+- Permite descargar el CSV de registros.
+- Expone una API REST `/api/ultima` para obtener los últimos datos.
 
-Lectura de temperatura, humedad, presión, luz, lluvia y calidad del aire (CO₂)
+## Tecnologías
 
-Cálculo de probabilidad de lluvia basado en condiciones ambientales
+- ESP32 con MicroPython
+- Flask + Gunicorn (Python 3)
+- HTML5 + CSS (plantilla básica)
 
-Envío de datos al servidor cada 10 segundos
+## Deploy automático
 
-Almacenamiento automático de datos en archivo CSV cada 15 minutos
+Este proyecto está preparado para ser desplegado automáticamente en [Render.com](https://render.com).
 
-Interfaz web responsive con diseño y animaciones modernas
+### Comandos Render
 
-Botón de descarga de registros históricos (CSV)
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `gunicorn servidor_meteo:app`
 
-Cambios visuales de día y noche según la hora actual
+## Estructura
 
-Bluetooth BLE para comunicación con App Inventor (en desarrollo)
+AtmosPro/
+├── servidor_meteo.py
+├── requirements.txt
+├── templates/
+│ └── index.html
+├── static/
+│ └── ... (archivos CSS, JS, etc.)
+├── datos/ # generado automáticamente
+└── README.md
 
+## Endpoints
 
-Componentes utilizados
-
-ESP32 (con WiFi y BLE)
-
-Sensor DHT22 (temperatura y humedad)
-
-Sensor BMP280 (presión)
-
-Sensor BH1750 (luz)
-
-Sensor MQ135 (calidad del aire)
-
-Sensor de lluvia analógico
-
-Módulo RTC DS3231
-
-Requisitos del servidor
-
-Python 3.10+
-
-Flask
-
-
-Instalación rápida:
-
-pip install -r requirements.txt
-
-Archivos importantes
-
-main.py: Código MicroPython para el ESP32
-
-servidor_meteo.py: Servidor Flask que recibe datos y los guarda en CSV
-
-/templates/index.html: Interfaz web para visualizar datos
-
-/static/style.css: Estilos modernos inspirados en Windows 11
-
-registro.csv: Archivo que almacena las lecturas (se genera automáticamente)
-
-
-Cómo desplegar en Render
-
-Subí tu repositorio a GitHub con los archivos necesarios.
-
-Agregá los archivos requirements.txt y render.yaml.
-
-Creá un nuevo Web Service en Render apuntando al repo.
-
-
-¡Listoooooooo!
-
+- `/datos` → Recibe datos (POST)
+- `/` → Página principal
+- `/api/ultima` → Devuelve últimos datos en JSON
+- `/descargar` → Descarga CSV
 
 Licencia
 
