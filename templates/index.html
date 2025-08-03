@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AtmosPro - Estación Meteorológica</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/logo.png">
+</head>
+<body>
+    <div class="container">
+        <img src="/static/logo.png" alt="Logo" class="logo">
+        <h1>DATOS DEL CLIMA</h1>
+        <h2>Carlos Pellegrini, Santa Fe, Argentina</h2>
+        <h3><i>Santiago Nicolás Laguardia</i></h3>
+
+        <ul class="data-list" id="datos-lista">
+            <li>Cargando datos...</li>
+        </ul>
+
+        <div class="buttons">
+            <a href="/descargar"><button>Descargar CSV</button></a>
+        </div>
+    </div>
+
+    <script>
+        const columnas = [
+            "Fecha", "Hora", "Temperatura (°C)", "Humedad (%)",
+            "Presión (hPa)", "Luz (Lux)", "Lluvia (0-1023)",
+            "CO2 (ppm)", "Probabilidad lluvia (%)"
+        ];
+
+        async function actualizarDatos() {
+            try {
+                const response = await fetch("/api/ultima");
+                const data = await response.json();
+
+                const lista = document.getElementById("datos-lista");
+                lista.innerHTML = "";
+
+                if (data.length === 0) {
+                    lista.innerHTML = "<li>No hay datos disponibles aún.</li>";
+                } else {
+                    for (let i = 0; i < columnas.length; i++) {
+                        const item = document.createElement("li");
+                        item.innerHTML = `<strong>${columnas[i]}:</strong> ${data[i]}`;
+                        lista.appendChild(item);
+                    }
+                }
+            } catch (error) {
+                console.error("Error al actualizar datos:", error);
+            }
+        }
+
+        setInterval(actualizarDatos, 10000);
+        actualizarDatos();
+
+        // Fondo dinámico día/noche
+        const hora = new Date().getHours();
+        if (hora >= 6 && hora < 18) {
+            document.body.classList.add("dia");
+        } else {
+            document.body.classList.add("noche");
+        }
+    </script>
+</body>
+</html>
