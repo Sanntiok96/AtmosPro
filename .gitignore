@@ -1,23 +1,4 @@
-# Entorno virtual
-venv/
-.env
-*.env
-
-# Archivos compilados de Python
-*.pyc
 __pycache__/
-
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# Archivos de configuración de editores
-.vscode/
-.idea/
-
-# Archivos temporales
-*.bak
-*.swp
-
-# Archivos generados por Thonny
-*.temp.py
+*.pyc
+datos/
+.env
