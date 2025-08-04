@@ -31,7 +31,7 @@ def recibir_datos():
         return valor
 
     fecha = datos.get("fecha", "0000-00-00")
-    hora = datos.get("hora", "00:00")
+    hora = datos.get("hora", "00:00")[:5]
 
     fila = [
         fecha,
